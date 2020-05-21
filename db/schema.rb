@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_21_222120) do
+ActiveRecord::Schema.define(version: 2020_05_21_224316) do
 
   create_table "images", force: :cascade do |t|
     t.string "name", null: false
@@ -38,7 +38,10 @@ ActiveRecord::Schema.define(version: 2020_05_21_222120) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "show_in_gallery", default: false, null: false
+    t.index ["name", "show_in_gallery"], name: "index_items_on_name_and_show_in_gallery"
     t.index ["name"], name: "index_items_on_name"
+    t.index ["show_in_gallery"], name: "index_items_on_show_in_gallery"
   end
 
 end
