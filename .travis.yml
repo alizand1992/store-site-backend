@@ -1,0 +1,13 @@
+language: ruby
+
+rvm:
+  - 2.6.6
+
+branches:
+  only:
+    - master
+
+jobs:
+  include:
+    - name: "Test"
+      script: bundle exec rspec
