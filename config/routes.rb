@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :application, only: [:new]
 
   # Items
-  resources :items, only: %i[index create]
+  resources :items, only: %i[index show create]
 
   # Gallery
   resources :gallery, only: [:index]
