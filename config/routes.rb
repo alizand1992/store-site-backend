@@ -5,7 +5,10 @@ Rails.application.routes.draw do
   resources :application, only: [:new]
 
   # Items
-  resources :items, only: %i[index show create]
+  resources :items, only: %i[index show create update]
+
+  # Item Attributes
+  get 'item_attributes/:item_id', to: 'item_attributes#index'
 
   # Gallery
   resources :gallery, only: [:index]

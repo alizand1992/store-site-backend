@@ -9,9 +9,8 @@ class ItemsController < ApplicationController
 
   def show
     item = Item.find(params[:id])
-    attrs = ItemAttribute.find_by(item_id: params[:id])
 
-    render json: { item: item, attrs: attrs}.to_json, status: :ok
+    render json: { item: item }.to_json, status: :ok
   end
 
   def create
@@ -22,16 +21,24 @@ class ItemsController < ApplicationController
 
     item.save!
 
-    if params[:new_field].present?
-      new_field = JSON.parse(params[:new_field])
-
-      ItemAttribute.new(
-        item_id: item.id,
-        name: new_field['name'],
-        value: new_field['value']
-      ).save!
+    if params[:fields].present?
+      ItemAttribute.create_or_save_from_json(params[:fields], item.id)
     end
 
-    render json: { id: item.id, fields: ItemAttribute.find_by(item_id: item.id) }.to_json, status: :ok
+    render json: { id: item.id }.to_json, status: :ok
+  end
+
+  def update
+    item = Item.find(params[:id])
+    item.update(
+      name: params[:name],
+      show_in_gallery: params[:show_in_gallery]
+    )
+
+    if params[:fields].present?
+      ItemAttribute.create_or_save_from_json(params[:fields], item.id)
+    end
+
+    render json: { }.to_json, status: :ok
   end
 end
