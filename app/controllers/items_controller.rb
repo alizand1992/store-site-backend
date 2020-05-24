@@ -10,14 +10,18 @@ class ItemsController < ApplicationController
   def show
     item = Item.find(params[:id])
 
-    render json: { item: item }.to_json, status: :ok
+    images = item.images.map do |image|
+      {
+        url: rails_blob_url(image),
+        name: image.filename,
+      }
+    end
+
+    render json: { item: item, images: images }.to_json, status: :ok
   end
 
   def create
-    item = Item.new(
-      name: params[:name],
-      show_in_gallery: params[:show_in_gallery]
-    )
+    item = Item.new(item_params)
 
     item.save!
 
@@ -30,15 +34,20 @@ class ItemsController < ApplicationController
 
   def update
     item = Item.find(params[:id])
-    item.update(
-      name: params[:name],
-      show_in_gallery: params[:show_in_gallery]
-    )
+    item.update(item_params)
 
     if params[:fields].present?
       ItemAttribute.create_or_save_from_json(params[:fields], item.id)
     end
 
     render json: { }.to_json, status: :ok
+  end
+
+  private
+
+  def item_params
+    @item_params = params.permit(:name, :show_in_gallery, images: {})
+    @item_params[:images] = @item_params[:images].values
+    @item_params
   end
 end
