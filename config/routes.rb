@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   # Items
   resources :items, only: %i[index show create update]
+  get 'items/:id/images', to: 'items#images'
 
   # Item Attributes
   get 'item_attributes/:item_id', to: 'item_attributes#index'
