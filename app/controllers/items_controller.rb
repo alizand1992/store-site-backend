@@ -37,6 +37,10 @@ class ItemsController < ApplicationController
   end
 
   def update
+    item = Item.find(params[:id])
+    item.update(item_params)
+
+    render json: { id: item.id }.to_json, status: :ok
   end
 
   def images

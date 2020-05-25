@@ -7,11 +7,15 @@ class ItemAttributesController < ApplicationController
 
   def create
     item_id = params[:item_id]
-    params[:attrs].each do |attr|
+
+    ItemAttribute.where(item_id: item_id).destroy_all
+
+    params[:attrs].each_with_index do |attr, index|
       ItemAttribute.new(
         item_id: item_id,
         name: attr[:name],
-        value: attr[:value]
+        value: attr[:value],
+        order: attr[:order] || index + 1
       ).save!
     end
 
