@@ -9,8 +9,9 @@ class ItemsController < ApplicationController
 
   def show
     item = Item.find(params[:id])
+    attrs = item.item_attributes
 
-    render json: { item: item }.to_json, status: :ok
+    render json: { item: item, attrs: attrs }.to_json, status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { no_content: true }.to_json, status: :ok
   end
@@ -39,6 +40,11 @@ class ItemsController < ApplicationController
   end
 
   def images
+    images = Item.find(params[:id]).images.map do |image|
+      rails_blob_url(image)
+    end
+
+    render json: { images: images }.to_json, status: :ok
   end
 
   private
