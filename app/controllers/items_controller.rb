@@ -17,53 +17,33 @@ class ItemsController < ApplicationController
 
   def create
     item = Item.new(item_params)
+    item.save!
+
+    render json: { id: item.id }.to_json, status: :ok
+  end
+
+  def save_images
+    item = Item.find(params[:id])
+
+    item.thumbnail = params[:thumbnail]
+    item.images = params[:images].values
 
     item.save!
 
-    unless item.thumbnail.present?
-      item.make_thumbnail
-    end
+    item.make_thumbnail(item.thumbnail)
 
-
-    if params[:fields].present?
-      ItemAttribute.create_or_save_from_json(params[:fields], item.id)
-    end
-
-    render json: { id: item.id }.to_json, status: :ok
+    render json: { success: :ok }.to_json, status: :ok
   end
 
   def update
-    item = Item.find(params[:id])
-    item.update(item_params)
-
-    unless item.thumbnail.present?
-      item.thumbnail = item.images.first
-    end
-
-    if params[:fields].present?
-      ItemAttribute.create_or_save_from_json(params[:fields], item.id)
-    end
-
-    render json: { id: item.id }.to_json, status: :ok
   end
 
   def images
-    images = Item.find(params[:id]).images.map do |image|
-      {
-        blob_id: image.id,
-        url: rails_blob_url(image),
-        name: image.filename,
-      }
-    end
-
-    render json: { images: images }.to_json, status: :ok
   end
 
   private
 
   def item_params
-    @item_params = params.permit(:name, :show_in_gallery, images: {})
-    @item_params[:images] = @item_params[:images].values if @item_params[:images].present?
-    @item_params
+    @item_params = params.permit(:name, :show_in_gallery)
   end
 end

@@ -4,8 +4,8 @@ class Item < ApplicationRecord
   has_one_attached :thumbnail
   has_many_attached :images
 
-  def make_thumbnail
-    original_image = images.first
+  def make_thumbnail(original_image = nil)
+    original_image = original_image || images.first
     original_image.blob.open do |file|
       img = ImageProcessing::Vips
               .source(file)
@@ -17,7 +17,5 @@ class Item < ApplicationRecord
         content_type: original_image.content_type
       )
     end
-
-    self.save!
   end
 end

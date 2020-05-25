@@ -7,8 +7,10 @@ Rails.application.routes.draw do
   # Items
   resources :items, only: %i[index show create update]
   get 'items/:id/images', to: 'items#images'
+  post 'items/:id/images', to: 'items#save_images'
 
   # Item Attributes
+  resources :item_attributes, only: [:create]
   get 'item_attributes/:item_id', to: 'item_attributes#index'
 
   # Gallery
