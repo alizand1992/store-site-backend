@@ -18,11 +18,12 @@ class ItemsController < ApplicationController
   def create
     item = Item.new(item_params)
 
+    item.save!
+
     unless item.thumbnail.present?
-      item.thumbnail = item_params[:images].first
+      item.make_thumbnail
     end
 
-    item.save!
 
     if params[:fields].present?
       ItemAttribute.create_or_save_from_json(params[:fields], item.id)
