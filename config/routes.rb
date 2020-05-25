@@ -16,4 +16,6 @@ Rails.application.routes.draw do
   # Gallery
   resources :gallery, only: [:index]
 
+  # Site Properties
+  resources :site_properties, only: [:index]
 end
