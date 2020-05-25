@@ -9,7 +9,7 @@ class Item < ApplicationRecord
     original_image.blob.open do |file|
       img = ImageProcessing::Vips
               .source(file)
-              .resize_to_fill!(350, 350, crop: :attention)
+              .resize_to_fill!(450, 450, crop: :attention)
 
       self.thumbnail.attach(
         io: File.open(img),
