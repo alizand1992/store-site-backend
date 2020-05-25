@@ -41,6 +41,7 @@ class ItemsController < ApplicationController
   def images
     images = Item.find(params[:id]).images.map do |image|
       {
+        blob_id: image.id,
         url: rails_blob_url(image),
         name: image.filename,
       }
