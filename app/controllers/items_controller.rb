@@ -18,6 +18,10 @@ class ItemsController < ApplicationController
   def create
     item = Item.new(item_params)
 
+    unless item.thumbnail.present?
+      item.thumbnail = item_params[:images].first
+    end
+
     item.save!
 
     if params[:fields].present?
@@ -30,6 +34,10 @@ class ItemsController < ApplicationController
   def update
     item = Item.find(params[:id])
     item.update(item_params)
+
+    unless item.thumbnail.present?
+      item.thumbnail = item.images.first
+    end
 
     if params[:fields].present?
       ItemAttribute.create_or_save_from_json(params[:fields], item.id)

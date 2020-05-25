@@ -3,8 +3,6 @@ class GalleryController < ApplicationController
   def index
     items = Item.where(show_in_gallery: true)
 
-
-
     items = items.map do |item|
       {
         id: item.id,
