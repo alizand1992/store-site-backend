@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_25_074258) do
+ActiveRecord::Schema.define(version: 2020_05_25_180214) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 2020_05_25_074258) do
     t.text "value"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "description", default: ""
+    t.boolean "value_type", default: false
     t.index ["name"], name: "index_site_properties_on_name", unique: true
   end
 
