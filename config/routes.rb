@@ -18,4 +18,5 @@ Rails.application.routes.draw do
 
   # Site Properties
   resources :site_properties, only: [:index]
+  put 'site_properties', to: 'site_properties#update_all'
 end
