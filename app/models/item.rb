@@ -5,7 +5,14 @@ class Item < ApplicationRecord
   has_many_attached :images
 
   def make_thumbnail(original_image = nil)
-    original_image = original_image || images.first
+    original_image =
+      begin
+        original_image.blob
+        original_image
+      rescue
+        images.first
+      end
+
     original_image.blob.open do |file|
       img = ImageProcessing::Vips
               .source(file)

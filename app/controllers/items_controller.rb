@@ -26,15 +26,8 @@ class ItemsController < ApplicationController
   def save_images
     item = Item.find(params[:id])
 
-    if params[:thumbnail].is_a?(Integer) # check of thumbnail is being chosen from existing files
-      item.thumbnail = item.images.select { |img| img.id == params[:thumbnail] }.first
-    elsif params[:thumbnail].present? && (params[:thumbnail] != 'undefined')
-      item.thumbnail = params[:thumbnail]
-    end
-
     item.images = params[:images].values if params[:images].present?
     item.save!
-
 
     if params[:deleted].present?
       params[:deleted].values.each do |img_id|
@@ -46,6 +39,17 @@ class ItemsController < ApplicationController
         end
       end
     end
+
+    if params[:thumbnail].is_a?(String) # check of thumbnail is being chosen from existing files
+      if item.images.select { |img| img.id == params[:thumbnail] }.first.present?
+        item.thumbnail = ActiveStorage::Attachment.find(params[:thumbnail])
+      else
+        item.thumbnail = nil
+      end
+    elsif params[:thumbnail].present? && (params[:thumbnail] != 'undefined')
+      item.thumbnail = params[:thumbnail]
+    end
+
 
     item.make_thumbnail(item.thumbnail)
 
