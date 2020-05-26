@@ -26,10 +26,26 @@ class ItemsController < ApplicationController
   def save_images
     item = Item.find(params[:id])
 
-    item.thumbnail = params[:thumbnail]
-    item.images = params[:images].values
+    if params[:thumbnail].is_a?(Integer) # check of thumbnail is being chosen from existing files
+      item.thumbnail = item.images.select { |img| img.id == params[:thumbnail] }.first
+    elsif params[:thumbnail].present? && (params[:thumbnail] != 'undefined')
+      item.thumbnail = params[:thumbnail]
+    end
 
+    item.images = params[:images].values if params[:images].present?
     item.save!
+
+
+    if params[:deleted].present?
+      params[:deleted].values.each do |img_id|
+        begin
+          img = ActiveStorage::Attachment.find(img_id)
+          img.purge_later
+        rescue ActiveRecord::RecordNotFound
+          # Ignore deleting an already deleted file
+        end
+      end
+    end
 
     item.make_thumbnail(item.thumbnail)
 
@@ -46,6 +62,18 @@ class ItemsController < ApplicationController
   def images
     images = Item.find(params[:id]).images.map do |image|
       rails_blob_url(image)
+    end
+
+    render json: { images: images }.to_json, status: :ok
+  end
+
+  def image_data
+    images = Item.find(params[:id]).images.map do |image|
+      {
+        id: image.id,
+        name: image.filename,
+        url: rails_blob_url(image),
+      }
     end
 
     render json: { images: images }.to_json, status: :ok

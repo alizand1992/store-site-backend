@@ -27,5 +27,7 @@ module StoreSiteBackend
         )
       end
     end
+
+    config.active_storage.replace_on_assign_to_many = false
   end
 end
