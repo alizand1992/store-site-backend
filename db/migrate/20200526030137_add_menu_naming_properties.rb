@@ -9,7 +9,7 @@ class AddMenuNamingProperties < ActiveRecord::Migration[6.0]
 
     SiteProperty.new(
       name: 'MENU_2',
-      value: 'Services',
+      value: 'Posts',
       description: 'Title for menu 2',
       value_type: SiteProperty::TEXT
     ).save!
