@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_030137) do
+ActiveRecord::Schema.define(version: 2020_05_27_021128) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -53,6 +53,19 @@ ActiveRecord::Schema.define(version: 2020_05_26_030137) do
     t.index ["name", "show_in_gallery"], name: "index_items_on_name_and_show_in_gallery"
     t.index ["name"], name: "index_items_on_name"
     t.index ["show_in_gallery"], name: "index_items_on_show_in_gallery"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body", default: ""
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "active", default: false
+    t.index "\"string\"", name: "index_posts_on_string"
+    t.index ["active"], name: "index_posts_on_active"
+    t.index ["id", "active"], name: "index_posts_on_id_and_active"
+    t.index ["id", "title"], name: "index_posts_on_id_and_title"
+    t.index ["title", "active"], name: "index_posts_on_title_and_active"
   end
 
   create_table "site_properties", force: :cascade do |t|
