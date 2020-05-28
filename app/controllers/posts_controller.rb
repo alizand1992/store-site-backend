@@ -4,6 +4,7 @@ class PostsController < ApplicationController
 
     posts = posts.map do |post|
       {
+        id: post.id,
         title: post.title,
         body: post.body,
         created_at: post.created_at.strftime('%m/%d/%Y')
@@ -22,6 +23,13 @@ class PostsController < ApplicationController
 
   def show
     post =  Post.find(params[:id])
+
+    render json: { post: post }.to_json, status: :ok
+  end
+
+  def update
+    post =  Post.find(params[:id])
+    post.update(post_params(params))
 
     render json: { post: post }.to_json, status: :ok
   end

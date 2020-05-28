@@ -22,5 +22,5 @@ Rails.application.routes.draw do
   put 'site_properties', to: 'site_properties#update_all'
 
   # Posts
-  resources :posts, only: [:index, :show, :create]
+  resources :posts, only: [:index, :show, :create, :update]
 end
