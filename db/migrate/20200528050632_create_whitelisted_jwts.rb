@@ -5,7 +5,7 @@ class CreateWhitelistedJwts < ActiveRecord::Migration[6.0]
       t.string :aud
 
       t.datetime :exp, mull: false
-      t.references :users, foreign_key: { on_delete: :cascade }, null: false
+      t.references :user, foreign_key: { on_delete: :cascade }, null: false
 
       t.timestamps
     end
