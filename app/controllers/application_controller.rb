@@ -1,16 +1,12 @@
 require 'application_responder'
 
 class ApplicationController < ActionController::API
+  respond_to :json
   include ActionController::MimeResponds
-  include ActionController::Flash
   # before_action :devise_permitted_params, if: :devise_controller?
   self.responder = ApplicationResponder
 
-  respond_to :json
-
   def render_resource(resource)
-    raise resource.inspect
-
     if resource.errors.empty?
       render json: resource
     else

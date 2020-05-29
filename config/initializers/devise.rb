@@ -10,7 +10,8 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   config.secret_key = '15b7ef7980abd0713246d57e88adeaa97b0b9c66bd9f7cfeff4cc44bc7d851ace15ff01b415defd3acb2a1158e88f4b218f774123e5dac2f0c97be9ab9fece07'
   config.jwt do |jwt|
-    jwt.secret = config.secret_key
+    jwt.secret = '15b7ef7980abd0713246d57e88adeaa97b0b9c66bd9f7cfeff4cc44bc7d851ace15ff01b415defd3acb2a1158e88f4b218f774123e5dac2f0c97be9ab9fece07'
+    jwt.expiration_time = 1.day.to_i
   end
 
   # ==> Controller configuration
