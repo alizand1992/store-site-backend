@@ -1,4 +1,6 @@
 class ItemsController < ApplicationController
+  before_action :authenticate_user!, only: [:create, :save_images, :update]
+
   def index
     items = Item.all
 
@@ -11,9 +13,13 @@ class ItemsController < ApplicationController
     item = Item.find(params[:id])
     attrs = item.item_attributes
 
+    raise SecurityError if current_user.nil? && item.show_in_gallery == false
+
     render json: { item: item, attrs: attrs }.to_json, status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { no_content: true }.to_json, status: :ok
+  rescue SecurityError
+    render json: { no_permission: true }.to_json, status: :unauthorized
   end
 
   def create
@@ -64,11 +70,17 @@ class ItemsController < ApplicationController
   end
 
   def images
-    images = Item.find(params[:id]).images.map do |image|
+    item = Item.find(params[:id])
+
+    raise SecurityError if current_user.nil? && item.show_in_gallery == false
+
+    images = item.images.map do |image|
       rails_blob_url(image)
     end
 
     render json: { images: images }.to_json, status: :ok
+  rescue SecurityError
+    render json: { no_permission: true }.to_json, status: :unauthorized
   end
 
   def image_data
