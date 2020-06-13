@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   # General Routes
   resources :application, only: [:new, :index]
   get 'application/is_user_signed_in', to: 'application#is_user_signed_in?'
+  get 'application/show_setup_wizard', to: 'application#show_setup_wizard?'
 
   # Items
   resources :items, only: %i[index show create update]

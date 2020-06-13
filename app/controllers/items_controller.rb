@@ -56,7 +56,6 @@ class ItemsController < ApplicationController
       item.thumbnail = params[:thumbnail]
     end
 
-
     item.make_thumbnail(item.thumbnail)
 
     render json: { success: :ok }.to_json, status: :ok

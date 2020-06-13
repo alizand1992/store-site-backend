@@ -1,6 +1,6 @@
 require 'application_responder'
 
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
   respond_to :json
   include ActionController::MimeResponds
 
@@ -8,6 +8,10 @@ class ApplicationController < ActionController::API
 
   def is_user_signed_in?
     render json: { logged_in: true }.to_json, status: :ok
+  end
+
+  def show_setup_wizard?
+    render json: { show_setup_wizard: User.count == 0 }.to_json, status: :ok
   end
 
   def new
