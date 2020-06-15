@@ -46,17 +46,14 @@ class ItemsController < ApplicationController
       end
     end
 
-    if params[:thumbnail].is_a?(String) # check of thumbnail is being chosen from existing files
-      if item.images.select { |img| img.id == params[:thumbnail] }.first.present?
-        item.thumbnail = ActiveStorage::Attachment.find(params[:thumbnail])
-      else
-        item.thumbnail = nil
-      end
-    elsif params[:thumbnail].present? && (params[:thumbnail] != 'undefined')
-      item.thumbnail = params[:thumbnail]
-    end
+    render json: { success: :ok }.to_json, status: :ok
+  end
 
-    item.make_thumbnail(item.thumbnail)
+  def select_thumbnail
+    item = Item.find(params[:id])
+    item.make_thumbnail(ActiveStorage::Attachment.find(params[:image_id]))
+
+    item.save!
 
     render json: { success: :ok }.to_json, status: :ok
   end

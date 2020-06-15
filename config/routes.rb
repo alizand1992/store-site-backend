@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get 'items/:id/images', to: 'items#images'
   get 'items/:id/image_data', to: 'items#image_data'
   post 'items/:id/images', to: 'items#save_images'
+  post 'items/:id/select_thumbnail', to: 'items#select_thumbnail'
 
   # Item Attributes
   resources :item_attributes, only: [:create]
