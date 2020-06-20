@@ -84,7 +84,7 @@ class ItemsController < ApplicationController
       {
         id: image.id,
         name: image.filename,
-        url: rails_blob_url(image),
+        url: rails_blob_url(image).gsub('http://127.0.0.1:5000/', 'alizand.io/api/'),
       }
     end
 
